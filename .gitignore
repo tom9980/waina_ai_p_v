@@ -1,0 +1,22 @@
+# .gitignore for ai_p_v ? exclude api keys, generated media, and system files
+
+# API keys and credentials (bat/ps1 contain hardcoded LK888 keys)
+*.bat
+*.ps1
+
+# Node
+node_modules/
+
+# Generated output (videos, images from pipeline runs)
+output/
+
+# System
+Thumbs.db
+Desktop.ini
+
+# Screenshots and images
+*.png
+*.jpg
+
+# Scheduled tasks folder (contains batch scripts with API keys)
+scheduled/
