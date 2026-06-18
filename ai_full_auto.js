@@ -127,19 +127,7 @@ async function downloadResult(url, outputPath) {
   log("  Downloaded -> " + outputPath);
 }
 const STORY_ARCS = [
-  {
-    id: "boutique_sale_reveal",
-    title: "Boutique sale reveal",
-    concept: "A complete boutique flash-sale mini ad: discovery, price reveal, confident exit.",
-    continuity: "warm boutique lighting, same outfit, same bag, polished retail fashion mood",
-    allowPriceTagText: true,
-    shots: [
-      "Opening: the model enters a small boutique and notices the woven handbag displayed on a clean pedestal.",
-      "Product beat: she lifts the bag and a large physical hangtag is prominently visible close to camera, showing original price $100 crossed out with a bold red line and sale price $43.99 in crisp sharp text.",
-      "Closing: she wears the bag on her shoulder and walks out of the boutique with a confident smile."
-    ]
-  },
-  {
+    {
     id: "limited_sale_unboxing",
     title: "Limited sale unboxing",
     concept: "A premium home unboxing story that reveals the sale price before the model styles the bag.",
@@ -480,7 +468,7 @@ const STORY_ARCS = [
 
 
 async function gptGenerateScenePrompts(productUrl, modelUrl, story) {
-  const systemPrompt = "You are a fashion advertising image director. Generate 3 detailed photorealistic image prompts that tell a connected 3-shot story for a women handbag ad. Each prompt must describe the model, the exact handbag, the setting, lighting, and camera framing. Do NOT add any text overlay, logo, or watermark to the image description.";
+  const systemPrompt = "You are a fashion advertising image director. Generate 3 detailed photorealistic image prompts that tell a connected 3-shot story for a women handbag ad. Each prompt must describe the model, the exact handbag, the setting, lighting, and camera framing. Each prompt must produce a SINGLE full-frame 9:16 photograph — NEVER a tiled layout, three-panel grid, split-screen, or collage. Do NOT add any text overlay, logo, or watermark to the image description.";
 
   const userContent = "Product (handbag): " + productUrl + "\nModel (person): " + modelUrl + "\nStory arc: " + story.title + "\nConcept: " + story.concept + "\nContinuity: " + story.continuity + "\nPrice tag text required: " + (story.allowPriceTagText ? "YES - include large physical hangtag with $100 crossed out and $43.99 in crisp text" : "NO - do not add any price tag") + "\n\n" + MODEL_WARDROBE_RULE + "\n\nCRITICAL BAG STRAP RULE: The handbag handle/strap must be structurally perfect - one unbroken solid piece with smooth continuous edges. The strap must NEVER appear split, cracked, torn, frayed, pixelated, or disconnected from the bag. It must attach cleanly to both sides of the bag without floating.";
 
@@ -514,7 +502,7 @@ async function gptGenerateScenePrompts(productUrl, modelUrl, story) {
 
 function withBagPreservationRules(prompt, story, shotIndex) {
   const isPriceTagBeat = story.allowPriceTagText && (shotIndex === 0 || shotIndex === 1);
-  const textRule = isPriceTagBeat ? "No logos and no watermark. No extra readable text except the physical sale hangtag, which may show only $100 crossed out and $43.99. The hangtag must be large, positioned prominently, with bold black text and red strikethrough, crisply legible, not blurred." : "No logos, no text, no readable words, no watermark. No hangtags, no price tags, no sale tags.";
+  const textRule = isPriceTagBeat ? "SINGLE full-frame photograph. NO three-grid, NO split-screen, NO multi-panel, NO collage, NO tiled layouts. No logos and no watermark. No extra readable text except the physical sale hangtag, which may show only $100 crossed out and $43.99. The hangtag must be large, positioned prominently, with bold black text and red strikethrough, crisply legible, not blurred." : "SINGLE full-frame photograph. NO three-grid, NO split-screen, NO multi-panel, NO collage, NO tiled layouts. No logos, no text, no readable words, no watermark. No hangtags, no price tags, no sale tags.";
   return prompt + "\n\nCritical wardrobe rules: IGNORE the clothing the model wears in the reference photo. Dress her in a brand-new summer outfit as follows: " + MODEL_WARDROBE_RULE + "\n\nCritical product preservation rules: Reference image 2 is the handbag. The bag in the final image MUST be an exact pixel-level copy of reference image 2: identical color, shape, size, proportions, handle length, handle thickness, strap length, weave pattern, texture, material, hardware, and stitching. Do NOT elongate, shorten, thin, thicken, split, fray, tear, crack, or otherwise alter any part of the bag. The handle/strap must be ONE continuous solid piece. The bag must be the main subject, clearly visible and prominent in the frame. " + textRule;
 }
 
@@ -567,7 +555,7 @@ async function generateSceneImageUrls(productUrl, modelUrl, story) {
 }
 
 async function gptAnalyzeVideoPrompts(sceneImageUrls, modelUrl) {
-  const systemPrompt = "You are a video ad director. Given 3 ordered scene reference images and 1 model reference, generate 3 detailed image-to-video prompts (Shot 1, Shot 2, Shot 3) for a vertical TikTok/Instagram fashion ad. Each prompt must include: model action + bag action + camera movement + voiceover narration line. Voiceover: warm youthful female American voice, same narrator across all 3 shots, medium-fast TikTok ad rhythm, steady volume with slight lift on price. PRICE PRONUNCIATION: When the narration mentions $43.99, always pronounce it as 'forty-three point nine nine' — include the word 'point', never say 'forty-three ninety-nine' or 'forty-three dollars ninety-nine cents'. No BGM, no on-screen text, no logo, no watermark. Preserve model exact identity, exact outfit, and exact handbag from references. CLOTHING COLOR LOCK: The outfit colors must remain absolutely fixed throughout the entire video — no fading, no shifting, no color transitions, no gradient changes. The clothing must look identical in color and tone from the first frame to the last frame. HANGTAG LEGIBILITY: If a physical sale hangtag with $100 crossed out and $43.99 is visible in the reference image, it must remain razor-sharp, high-contrast, and fully readable in every frame. The tag text must never blur, fade, warp, pixelate, or disappear. It must stay as crisp as printed text on cardboard throughout all camera movements. BAG HAND LOCK: The handbag must remain in the SAME hand or position throughout the entire video. If the reference shows the bag in the left hand, it stays in the left hand for every frame. If in the right hand, it stays in the right hand. The bag must NEVER teleport between hands, appear in both hands simultaneously, or duplicate itself. Only ONE bag, in ONE consistent hand, from start to finish. BAG PHYSICS: The bag must obey real-world physics — it cannot float, hover, levitate, or fly through the air without being held. If the model is not actively holding or carrying the bag, it must be resting on a visible surface (table, chair, floor). The handle/strap must be one solid unbroken piece — it must never split, crack, detach, or disconnect from the bag body. The strap must maintain continuous connection to the bag at all times. CRITICAL: bag handle/strap must be one solid unbroken piece. PACING RULE: All video prompts must specify natural, medium-to-brisk TikTok/Instagram pacing. Actions and camera moves should feel alive and normal-speed, not sluggish or dragging. Avoid overly slow, lethargic, or dragged-out motions. Aim for the natural rhythm of a casual fashion ad — not rushed, but never slow.";
+  const systemPrompt = "You are a video ad director. Given 3 ordered scene reference images and 1 model reference, generate 3 detailed image-to-video prompts (Shot 1, Shot 2, Shot 3) for a vertical TikTok/Instagram fashion ad. Each prompt must include: model action + bag action + camera movement + voiceover narration line. Voiceover: warm youthful female American voice, same narrator across all 3 shots, medium-fast TikTok ad rhythm, steady volume with slight lift on price. PRICE PRONUNCIATION: When the narration mentions $43.99, always pronounce it as 'forty-three point nine nine' — include the word 'point', never say 'forty-three ninety-nine' or 'forty-three dollars ninety-nine cents'. No BGM, no on-screen text, no logo, no watermark. Preserve model exact identity, exact outfit, and exact handbag from references. CLOTHING COLOR LOCK: The outfit colors must remain absolutely fixed throughout the entire video — no fading, no shifting, no color transitions, no gradient changes. The clothing must look identical in color and tone from the first frame to the last frame. HANGTAG LEGIBILITY: If a physical sale hangtag with $100 crossed out and $43.99 is visible in the reference image, it must remain razor-sharp, high-contrast, and fully readable in every frame. The tag text must never blur, fade, warp, pixelate, or disappear. It must stay as crisp as printed text on cardboard throughout all camera movements. BAG HAND LOCK: The handbag must remain in the SAME hand or position throughout the entire video. If the reference shows the bag in the left hand, it stays in the left hand for every frame. If in the right hand, it stays in the right hand. The bag must NEVER teleport between hands, appear in both hands simultaneously, or duplicate itself. Only ONE bag, in ONE consistent hand, from start to finish. BAG PHYSICS: The bag must obey real-world physics — it cannot float, hover, levitate, or fly through the air without being held. If the model is not actively holding or carrying the bag, it must be resting on a visible surface (table, chair, floor). The handle/strap must be one solid unbroken piece — it must never split, crack, detach, or disconnect from the bag body. The strap must maintain continuous connection to the bag at all times. CRITICAL: bag handle/strap must be one solid unbroken piece. PACING RULE: Every action and camera movement must match real human speed exactly — no slow-motion, no dreamlike drifting, no lingering. Walking must look like real walking, picking up the bag must look like a real-time arm movement, turning must match real body rotation speed. If a motion takes 2 seconds in real life, it must take 2 seconds in the video — not stretched to 4 or 6 seconds. Every movement must feel like raw phone footage of a real person, crisp and immediate. No floating, no gliding, no slow-motion effects of any kind.";
   const userContent = [
     { type: "text", text: "Model reference image:" },
     { type: "image_url", image_url: { url: modelUrl } },
@@ -667,7 +655,10 @@ async function runFullAutoForProduct(productPath, modelPath, outputDir, productC
   log("=== PHASE 2: Direct Video Generation ===");
   const videoTasks = [];
   for (let i = 0; i < 3; i++) {
-    const taskId = await submitVideoTask(sceneImageUrls[i], videoPrompts[i], i+1, productCode);
+    // Append CLOTHING COLOR LOCK directly to grok-video prompt to prevent frame-to-frame color shifting
+    const colorLockRule = "\n\nCRITICAL CLOTHING COLOR LOCK: The model EXACT outfit colors must stay IDENTICAL in every single frame of this video. No fading, no shifting, no hue changes, no saturation changes, no brightness changes. If the top is white, it stays precisely the same white from frame 1 to the last frame. If pants are light blue, they stay exactly the same light blue. ZERO color variation between frames. The clothing must look like one continuous unedited shot with absolutely no color drift whatsoever.";
+    const lockedPrompt = videoPrompts[i] + colorLockRule;
+    const taskId = await submitVideoTask(sceneImageUrls[i], lockedPrompt, i+1, productCode);
     videoTasks.push(taskId);
   }
 
