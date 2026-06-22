@@ -368,18 +368,6 @@ const STORY_ARCS = [
     ]
   },
   {
-    id: "wait_how_much",
-    title: "Wait, how much?!",
-    concept: "A double-take price reveal where the model herself is shocked by how affordable the bag is.",
-    continuity: "clean white background, direct-to-camera energy, playful surprise reaction",
-    allowPriceTagText: true,
-    shots: [
-      "Opening: the model holds the bag up to the camera with a confident look, as if showing off a luxury find.",
-      "Product beat: she flips the large physical hangtag toward camera, prominently showing original price $100 crossed out with a bold red line and sale price $43.99 in crisp sharp text, then does a genuine double-take.",
-      "Closing: she recovers with a playful shrug and a knowing smile, hugging the bag close."
-    ]
-  },
-  {
     id: "bf_buys_me_bag",
     title: "BF buys me a bag",
     concept: "A boyfriend-shopping moment where the price makes the decision easy and the interaction feels real.",
@@ -413,18 +401,6 @@ const STORY_ARCS = [
       "Opening: the model films her outfit in a full-length mirror, pausing to highlight the woven handbag on her arm.",
       "Product beat: she reaches into the bag and pulls out sunglasses, lipstick, and keys one by one, showing how the bag completes the look.",
       "Closing: she pushes the apartment door open and steps outside into sunlight, the bag swinging naturally for a final outfit reveal."
-    ]
-  },
-  {
-    id: "five_ways_to_style",
-    title: "5 ways to style this bag",
-    concept: "A quick-cut styling montage showing the bag paired with different summer outfits.",
-    continuity: "same neutral background for outfit changes, fast-paced fashion montage energy",
-    allowPriceTagText: false,
-    shots: [
-      "Opening: the model stands in frame with the bag as quick outfit swaps flash through five different summer looks in rapid succession.",
-      "Product beat: she settles on one outfit and does a slow turn, showing the bag prominently with the final look.",
-      "Closing: she faces the camera and gives a playful wink, the bag held at her side."
     ]
   },
   {
@@ -462,7 +438,43 @@ const STORY_ARCS = [
       "Product beat: in a coffee-shop queue a stranger turns and gestures toward the bag with an approving look.",
       "Closing: the model smiles at the camera, points toward her phone, and walks away confidently with the bag on her arm."
     ]
-  }
+  },
+﻿  {
+    id: "morning_routine",
+    title: "Morning routine",
+    concept: "A bedroom-to-doorway morning moment where the bag is part of her daily ritual, from bedside to mirror to coffee.",
+    continuity: "bright bedroom with soft morning light, clean minimal aesthetic, relaxed wake-up energy",
+    allowPriceTagText: false,
+    shots: [
+      "Opening: the model wakes up in soft morning light, the woven handbag resting on a bench at the foot of her bed.",
+      "Product beat: she walks to her vanity, picks up the bag, and checks it with her reflection in the mirror, turning slightly.",
+      "Closing: she grabs her coffee, slings the bag over her shoulder, and pushes the bedroom door open into the day."
+    ]
+  },
+  {
+    id: "gift_from_mom",
+    title: "Gift from mom",
+    concept: "A heartfelt moment where the mom gifts the bag, the hangtag confirms the deal price, and the hug is real.",
+    continuity: "cozy living room with warm natural light, genuine family warmth, gift-unwrapping energy",
+    allowPriceTagText: true,
+    shots: [
+      "Opening: the model sits on a living room sofa as her mom hands her a wrapped gift box, the model eyes lighting up.",
+      "Product beat: she lifts the woven handbag from the box and the large physical hangtag is prominently visible close to camera, showing original price $100 crossed out with a bold red line and sale price $43.99 in crisp sharp text, while the mom points at the tag with a knowing smile.",
+      "Closing: the model puts the bag on her shoulder and hugs her mom tight, the gift box still on the sofa behind them."
+    ]
+  },
+  {
+    id: "fitting_room_reckoning",
+    title: "Fitting room reckoning",
+    concept: "A fitting-room try-on marathon where the bag works with every outfit, and the price tag turns indecision into checkout.",
+    continuity: "bright boutique fitting room with large mirror, soft changing-room lighting, decisive shopping energy",
+    allowPriceTagText: true,
+    shots: [
+      "Opening: the model enters a fitting room carrying several outfits, the woven handbag already hanging on the hook beside the mirror.",
+      "Product beat: she tries the bag with multiple outfits in quick succession, then on the last look she lifts the large physical hangtag prominently visible close to camera, showing original price $100 crossed out with a bold red line and sale price $43.99 in crisp sharp text, and gives a decisive nod.",
+      "Closing: she carries the bag out of the fitting room and heads toward the checkout counter with confidence."
+    ]
+  },
 ];
 
 
@@ -636,7 +648,7 @@ async function runFullAutoForProduct(productPath, modelPath, outputDir, productC
   log("--- Uploading ---");
   const productUrl = await uploadImage(productPath);
   log("newOnly=" + newOnly + " stories=" + STORY_ARCS.length);
-  const pool = newOnly ? STORY_ARCS.filter(function(s) { return /^(wait_how_much|bf_buys_me_bag|sale_alert_countdown|ootd_check|five_ways_to_style|pov_you_got_the_bag|beach_to_brunch|conversation_starter)$/.test(s.id); }) : STORY_ARCS;
+  const pool = newOnly ? STORY_ARCS.filter(function(s) { return /^(morning_routine|gift_from_mom|fitting_room_reckoning)$/.test(s.id); }) : STORY_ARCS;
   const story = randomPick(pool, 1)[0];
   log("Story: [" + story.id + "] " + story.title);
   story.shots.forEach(function(s, i) { log("  Beat " + (i+1) + ": " + s); });

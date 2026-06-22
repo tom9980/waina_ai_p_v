@@ -59,9 +59,9 @@ m1.png          ← 模特图（必须 m + 数字）
 - 图片尺寸：2160×3840（9:16 竖屏）
 - Key 通过环境变量 `LK888_API_KEY` 传入，不要写进文件
 
-## 剧本库（29个）
+## 剧本库（28个）
 
-价格吊牌系列（14）：boutique_sale_reveal, limited_sale_unboxing, friend_price_reveal, factory_craft, warehouse_sale, popup_store, design_studio, livestream_sale, sample_room, packing_station, trade_show, wait_how_much, bf_buys_me_bag, sale_alert_countdown
+价格吊牌系列（13）：limited_sale_unboxing, friend_price_reveal, factory_craft, warehouse_sale, popup_store, design_studio, livestream_sale, sample_room, packing_station, trade_show, wait_how_much, bf_buys_me_bag, sale_alert_countdown
 
 生活方式系列（15）：cafe_to_street, travel_ready, date_night_ready, summer_boardwalk, unboxing_to_outfit, fitting_room_mirror, bookstore_browse, girls_brunch, whats_in_my_bag, work_to_dinner, ootd_check, five_ways_to_style, pov_you_got_the_bag, beach_to_brunch, conversation_starter
 
